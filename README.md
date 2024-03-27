@@ -1,10 +1,74 @@
-# Stock-Price-Production-using-machine-learning-and-python
-ChatGPT 3.5
+# Importing necessary libraries
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+import yfinance as yf
+
+# Fetching historical stock data
+def fetch_stock_data(ticker, start_date, end_date):
+    stock_data = yf.download(ticker, start=start_date, end=end_date)
+    return stock_data
+
+# Preprocessing data
+def preprocess_data(data):
+    data['Date'] = data.index
+    data.dropna(inplace=True)
+    X = data[['Open', 'High', 'Low', 'Volume']]
+    y = data['Close']
+    return X, y
+
+# Splitting data into training and testing sets
+def split_data(X, y):
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    return X_train, X_test, y_train, y_test
+
+# Training the model
+def train_model(X_train, y_train):
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+    return model
+
+# Evaluating the model
+def evaluate_model(model, X_test, y_test):
+    score = model.score(X_test, y_test)
+    return score
+
+# Main function
+def main():
+    # Fetching stock data
+    ticker = 'AAPL'  # Example ticker symbol (Apple Inc.)
+    start_date = '2020-01-01'
+    end_date = '2023-01-01'
+    stock_data = fetch_stock_data(ticker, start_date, end_date)
+    
+    # Preprocessing data
+    X, y = preprocess_data(stock_data)
+    
+    # Splitting data
+    X_train, X_test, y_train, y_test = split_data(X, y)
+    
+    # Training the model
+    model = train_model(X_train, y_train)
+    
+    # Evaluating the model
+    score = evaluate_model(model, X_test, y_test)
+    print("Model Accuracy:", score)
+
+    # Example prediction
+    example_data = np.array([[135.0, 140.0, 130.0, 10000000]])  # Example features: [Open, High, Low, Volume]
+    predicted_price = model.predict(example_data)
+    print("Predicted Price:", predicted_price)
+
+if __name__ == "__main__":
+    main()
+ //   # Stock-Price-Production-using-machine-learning-and-python
+
 
 User
 Stock price Pridiction using machine learning 
 
-ChatGPT
+
 Predicting stock prices using machine learning involves using historical stock data to train a model that can forecast future price movements. Here's a simplified approach:
 
 Data Collection: Gather historical stock data including prices, volumes, and other relevant features.
@@ -31,11 +95,11 @@ User
 Stock price Pridiction using machine learning 
 code
 
-ChatGPT
+C
 Sure, here's a simple example of stock price prediction using Python with the Scikit-learn library for regression and pandas for data manipulation. This example uses linear regression, but you can experiment with other algorithms as well:
 
 python
-Copy code
+
 # Importing necessary libraries
 import numpy as np
 import pandas as pd
